@@ -6,7 +6,7 @@ find_package(Sodium REQUIRED)
 
 add_library(${PROJECT_NAME}
     include/ecore/crypto/random_bytes.h
-    src/random_bytes.cpp
+    src/ecore/crypto/random_bytes.cpp
 )
 
 target_compile_features(${PROJECT_NAME}
