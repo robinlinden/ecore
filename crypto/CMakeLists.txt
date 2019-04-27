@@ -20,8 +20,8 @@ if(NOT sodium_POPULATED)
 endif()
 
 add_library(${PROJECT_NAME}
-    include/ecore/crypto/random_bytes.h
-    src/ecore/crypto/random_bytes.cpp
+    include/ecore/crypto.h
+    src/ecore/crypto.cpp
 )
 
 target_compile_features(${PROJECT_NAME}

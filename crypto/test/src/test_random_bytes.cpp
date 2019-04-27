@@ -1,4 +1,4 @@
-#include "ecore/crypto/random_bytes.h"
+#include "ecore/crypto.h"
 
 #include <catch2/catch.hpp>
 
