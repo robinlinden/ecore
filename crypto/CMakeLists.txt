@@ -1,8 +1,23 @@
 project(ecore_crypto)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+include(FetchContent)
 
-find_package(Sodium REQUIRED)
+FetchContent_Declare(
+    Sodium
+    GIT_REPOSITORY https://github.com/robinlinden/libsodium-cmake.git
+    GIT_TAG c6171bfca479fb2ee375e2b1f55e174ed79c4f87
+)
+
+FetchContent_GetProperties(Sodium)
+if(NOT sodium_POPULATED)
+    set(SODIUM_DISABLE_TESTS ON CACHE INTERNAL "")
+
+    FetchContent_Populate(Sodium)
+    add_subdirectory(
+        ${sodium_SOURCE_DIR}
+        ${sodium_BINARY_DIR}
+    )
+endif()
 
 add_library(${PROJECT_NAME}
     include/ecore/crypto/random_bytes.h
