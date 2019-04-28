@@ -7,8 +7,6 @@ using namespace ecore::crypto;
 namespace {
 
 TEST_CASE("Key generation seems sensible") {
-    init_crypto();
-
     const auto bob = new_keypair();
     const auto alice = new_keypair();
 
@@ -17,8 +15,6 @@ TEST_CASE("Key generation seems sensible") {
 }
 
 TEST_CASE("Encryption works") {
-    init_crypto();
-
     const auto bob = new_keypair();
     const auto alice = new_keypair();
     const auto nonce = new_nonce();

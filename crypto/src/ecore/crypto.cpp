@@ -2,6 +2,7 @@
 
 #include <sodium.h>
 
+#include <atomic>
 #include <stdexcept>
 
 namespace ecore::crypto {
@@ -15,15 +16,24 @@ plaintext new_plaintext(size_t ciphertext_length) {
     return plaintext(ciphertext_length - crypto_box_MACBYTES, '@');
 }
 
-}
+void init_crypto_if_needed() {
+    static std::atomic<bool> initialized = false;
+    if (initialized) {
+        return;
+    }
 
-void init_crypto() {
     if (sodium_init() < 0) {
         throw std::runtime_error("bad stuff happened");
     }
+
+    initialized = true;
+}
+
 }
 
 std::pair<public_key, secret_key> new_keypair() {
+    init_crypto_if_needed();
+
     public_key pk;
     secret_key sk;
     crypto_box_keypair(pk.data(), sk.data());
@@ -32,6 +42,8 @@ std::pair<public_key, secret_key> new_keypair() {
 }
 
 nonce new_nonce() {
+    init_crypto_if_needed();
+
     nonce n;
     randombytes_buf(n.data(), n.size());
     return n;
@@ -42,6 +54,8 @@ ciphertext encrypt(
         const public_key &receiver,
         const nonce &nonce,
         const plaintext &plain) {
+    init_crypto_if_needed();
+
     ciphertext cipher{new_ciphertext(plain.size())};
     if (crypto_box_easy(
             cipher.data(),
@@ -61,6 +75,8 @@ plaintext decrypt(
         const public_key &sender,
         const nonce &nonce,
         const ciphertext &cipher) {
+    init_crypto_if_needed();
+
     plaintext plain = new_plaintext(cipher.size());
     if (crypto_box_open_easy(
             reinterpret_cast<uint8_t *>(plain.data()),
@@ -76,6 +92,8 @@ plaintext decrypt(
 }
 
 uint32_t random_bytes() {
+    init_crypto_if_needed();
+
     return randombytes_random();
 }
 

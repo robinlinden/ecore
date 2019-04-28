@@ -16,8 +16,6 @@ using plaintext = std::string;
 
 using nonce = std::array<uint8_t, 24>;
 
-void init_crypto(); // TODO: Remove.
-
 std::pair<public_key, secret_key> new_keypair();
 
 nonce new_nonce();
