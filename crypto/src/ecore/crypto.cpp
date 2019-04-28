@@ -31,14 +31,13 @@ void init_crypto_if_needed() {
 
 }
 
-std::pair<public_key, secret_key> new_keypair() {
+keypair new_keypair() {
     init_crypto_if_needed();
 
-    public_key pk;
-    secret_key sk;
-    crypto_box_keypair(pk.data(), sk.data());
+    keypair keypair;
+    crypto_box_keypair(keypair.public_key.data(), keypair.secret_key.data());
 
-    return std::make_pair(pk, sk);
+    return keypair;
 }
 
 nonce new_nonce() {

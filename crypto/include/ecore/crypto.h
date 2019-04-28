@@ -3,7 +3,6 @@
 #include <array>
 #include <cstdint>
 #include <string>
-#include <utility>
 #include <vector>
 
 namespace ecore::crypto {
@@ -11,12 +10,17 @@ namespace ecore::crypto {
 using public_key = std::array<uint8_t, 32>;
 using secret_key = std::array<uint8_t, 32>;
 
+struct keypair {
+    public_key public_key;
+    secret_key secret_key;
+};
+
 using ciphertext = std::vector<uint8_t>;
 using plaintext = std::string;
 
 using nonce = std::array<uint8_t, 24>;
 
-std::pair<public_key, secret_key> new_keypair();
+keypair new_keypair();
 
 nonce new_nonce();
 
