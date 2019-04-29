@@ -1,0 +1,33 @@
+dist: xenial
+language: cpp
+
+matrix:
+  include:
+    - name: "gcc 8"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+      env: MATRIX_EVAL="CXX=g++-8 BUILD_TYPE=Debug"
+
+    - name: "clang 8"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-8
+          packages:
+            - clang-8
+            - libstdc++-8-dev
+      env: MATRIX_EVAL="CXX=clang++-8 BUILD_TYPE=Debug"
+
+before_script:
+  - mkdir build && cd build
+  - eval "${MATRIX_EVAL}"
+
+script:
+  - cmake .. -DCMAKE_BUILD_TYPE="$BUILD_TYPE"
+  - make -j
+  - ctest -j --output-on-failure
