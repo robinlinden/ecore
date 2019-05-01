@@ -5,6 +5,8 @@
 #include <atomic>
 #include <stdexcept>
 
+using namespace ecore::core;
+
 namespace ecore::crypto {
 namespace {
 
