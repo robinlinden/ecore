@@ -50,7 +50,7 @@ std::stringstream make_bytes(
 
 public_key random_key() {
     public_key pk;
-    for (int i = 0; i < pk.size(); ++i) {
+    for (size_t i = 0; i < pk.size(); ++i) {
         pk[i] = rand() & 0xFF;
     }
     return pk;
