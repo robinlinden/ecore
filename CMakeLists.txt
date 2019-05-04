@@ -8,3 +8,4 @@ enable_testing()
 
 add_subdirectory(core)
 add_subdirectory(crypto)
+add_subdirectory(node_info)
