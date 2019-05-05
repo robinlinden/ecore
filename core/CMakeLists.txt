@@ -4,6 +4,7 @@ add_library(${PROJECT_NAME}
     include/ecore/core.h
     src/ecore/core.cpp
 )
+add_library(ecore::core ALIAS ${PROJECT_NAME})
 
 target_compile_features(${PROJECT_NAME}
     PRIVATE

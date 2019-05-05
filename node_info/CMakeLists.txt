@@ -4,6 +4,7 @@ add_library(${PROJECT_NAME}
     include/ecore/node_info.h
     src/ecore/node_info.cpp
 )
+add_library(ecore::node_info ALIAS ${PROJECT_NAME})
 
 target_compile_features(${PROJECT_NAME}
     PRIVATE
@@ -26,7 +27,7 @@ set_target_properties(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
-        ecore_core
+        ecore::core
     PRIVATE
         ecore::warnings
 )

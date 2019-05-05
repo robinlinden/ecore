@@ -35,8 +35,8 @@ set_target_properties(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Catch2::Catch2
+        ecore::node_info
         ecore::warnings
-        ecore_node_info
 )
 
 catch_discover_tests(${PROJECT_NAME})
