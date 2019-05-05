@@ -10,4 +10,8 @@ target_compile_options(${PROJECT_NAME} INTERFACE
         -Werror;
         -pedantic-errors;
     >
+    $<$<CXX_COMPILER_ID:MSVC>:
+        /W4;
+        /WX;
+    >
 )
