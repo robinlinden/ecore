@@ -50,25 +50,24 @@ nonce new_nonce() {
     return n;
 }
 
-ciphertext encrypt(
+encryption_result encrypt(
         const secret_key &sender,
         const public_key &receiver,
-        const nonce &nonce,
         const plaintext &plain) {
     init_crypto_if_needed();
 
-    ciphertext cipher{new_ciphertext(plain.size())};
+    encryption_result result{new_nonce(), new_ciphertext(plain.size())};
     if (crypto_box_easy(
-            cipher.data(),
+            result.ciphertext.data(),
             reinterpret_cast<const uint8_t *>(plain.data()),
             plain.size(),
-            nonce.data(),
+            result.nonce.data(),
             receiver.data(),
             sender.data()) != 0) {
         throw std::runtime_error("encryption failed");
     }
 
-    return cipher;
+    return result;
 }
 
 plaintext decrypt(

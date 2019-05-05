@@ -17,17 +17,19 @@ TEST_CASE("crypto: key generation") {
 TEST_CASE("crypto: encryption/decryption") {
     const auto bob = new_keypair();
     const auto alice = new_keypair();
-    const auto nonce = new_nonce();
     const std::string plain{"something about a quick brown fox"};
 
-    const ciphertext cipher = encrypt(
+    const auto res = encrypt(
             bob.secret_key,
             alice.public_key,
-            nonce,
             plain);
 
-    REQUIRE(std::string(begin(cipher), end(cipher)) != plain);
-    REQUIRE(plain == decrypt(alice.secret_key, bob.public_key, nonce, cipher));
+    REQUIRE(std::string(begin(res.ciphertext), end(res.ciphertext)) != plain);
+    REQUIRE(plain == decrypt(
+            alice.secret_key,
+            bob.public_key,
+            res.nonce,
+            res.ciphertext));
 }
 
 }

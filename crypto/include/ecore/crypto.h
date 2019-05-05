@@ -14,14 +14,18 @@ using plaintext = std::string;
 
 using nonce = std::array<uint8_t, 24>;
 
+struct encryption_result {
+    crypto::nonce nonce;
+    crypto::ciphertext ciphertext;
+};
+
 core::keypair new_keypair();
 
 nonce new_nonce();
 
-ciphertext encrypt(
+encryption_result encrypt(
         const core::secret_key &sender,
         const core::public_key &receiver,
-        const nonce &nonce,
         const plaintext &plain);
 plaintext decrypt(
         const core::secret_key &receiver,
