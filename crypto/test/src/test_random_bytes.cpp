@@ -6,7 +6,7 @@ using namespace ecore::crypto;
 
 namespace {
 
-TEST_CASE("Random bytes are probably random") {
+TEST_CASE("crypto: random bytes") {
     REQUIRE(random_bytes() != random_bytes());
 }
 

@@ -66,7 +66,7 @@ size_t streamsize(std::istream &stream) {
     return static_cast<size_t>(size);
 }
 
-TEST_CASE("node_info: Bytes in test cases are the right size") {
+TEST_CASE("node_info: length of tested bytes") {
     const std::vector<uint8_t> ipv4{1, 10, 100, 255};
     const uint16_t port{52089};
     const auto key = random_key();
@@ -83,7 +83,7 @@ TEST_CASE("node_info: Bytes in test cases are the right size") {
     REQUIRE(streamsize(bytes) == 51);
 }
 
-TEST_CASE("node_info: Parse ipv4 tcp node from bytes") {
+TEST_CASE("node_info: parse ipv4 tcp node") {
     const std::vector<uint8_t> ip{1, 10, 100, 255};
     const uint16_t port{8089};
     const auto key = random_key();
@@ -98,7 +98,7 @@ TEST_CASE("node_info: Parse ipv4 tcp node from bytes") {
     REQUIRE(info.public_key == key);
 }
 
-TEST_CASE("node_info: Parse ipv6 udp node from bytes") {
+TEST_CASE("node_info: parse ipv6 udp node") {
     const std::vector<uint8_t> ip{
             1, 10, 100, 255,
             2, 20, 200, 66,
