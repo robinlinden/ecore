@@ -2,10 +2,9 @@ project(ecore_crypto)
 
 include(FetchContent)
 
-FetchContent_Declare(
-    Sodium
+FetchContent_Declare(Sodium
     GIT_REPOSITORY https://github.com/robinlinden/libsodium-cmake.git
-    GIT_TAG c6171bfca479fb2ee375e2b1f55e174ed79c4f87
+    GIT_TAG 6f384498d2f6a8e33797697349b00dfd8a985d1e
 )
 
 FetchContent_GetProperties(Sodium)
