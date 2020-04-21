@@ -1,6 +1,11 @@
 dist: xenial
 language: cpp
 
+addons:
+  apt:
+    packages: &common-apt-packages
+      - python3-pip
+
 matrix:
   include:
     - name: "gcc 8"
@@ -9,6 +14,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - *common-apt-packages
             - g++-8
       env: MATRIX_EVAL="CXX=g++-8 BUILD_TYPE=Debug"
 
@@ -19,9 +25,14 @@ matrix:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-xenial-8
           packages:
+            - *common-apt-packages
             - clang-8
             - libstdc++-8-dev
       env: MATRIX_EVAL="CXX=clang++-8 BUILD_TYPE=Debug"
+
+install:
+  - python3 -m pip install pip==19.3.1 --upgrade
+  - python3 -m pip install cmake==3.14.4.post1 --upgrade --user
 
 before_script:
   - mkdir build && cd build
