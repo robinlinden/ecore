@@ -4,6 +4,9 @@ project(ecore)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+add_subdirectory(third_party/catch2)
+add_subdirectory(third_party/sodium)
+
 enable_testing()
 
 add_subdirectory(warnings)
