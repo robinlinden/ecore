@@ -22,8 +22,8 @@ enum transport_and_family : unsigned char {
 // 2       Port Number         Port number
 // 32      Public Key          Node ID
 
-node_info from_bytes(std::istream &bytestream) {
-    node_info info;
+NodeInfo from_bytes(std::istream &bytestream) {
+    NodeInfo info;
 
     char transport_and_family;
     if (!bytestream.read(&transport_and_family, 1)) {
@@ -32,26 +32,26 @@ node_info from_bytes(std::istream &bytestream) {
 
     switch (static_cast<unsigned char>(transport_and_family)) {
     case udp_ipv4:
-        info.protocol = transport_protocol::udp;
-        info.family = address_family::ipv4;
+        info.protocol = TransportProtocol::Udp;
+        info.family = AddressFamily::IPv4;
         break;
     case udp_ipv6:
-        info.protocol = transport_protocol::udp;
-        info.family = address_family::ipv6;
+        info.protocol = TransportProtocol::Udp;
+        info.family = AddressFamily::IPv6;
         break;
     case tcp_ipv4:
-        info.protocol = transport_protocol::tcp;
-        info.family = address_family::ipv4;
+        info.protocol = TransportProtocol::Tcp;
+        info.family = AddressFamily::IPv4;
         break;
     case tcp_ipv6:
-        info.protocol = transport_protocol::tcp;
-        info.family = address_family::ipv6;
+        info.protocol = TransportProtocol::Tcp;
+        info.family = AddressFamily::IPv6;
         break;
     default:
         throw std::runtime_error("family parsing");
     }
 
-    info.ip.resize(info.family == address_family::ipv4 ? 4 : 16);
+    info.ip.resize(info.family == AddressFamily::IPv4 ? 4 : 16);
     if (!bytestream.read(
             reinterpret_cast<char *>(info.ip.data()),
             info.ip.size())) {

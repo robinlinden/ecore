@@ -9,11 +9,11 @@
 #include <sstream>
 
 using namespace ecore::node_info;
-using ecore::core::public_key;
+using ecore::core::PublicKey;
 
 namespace {
 
-enum transport_and_family : unsigned char {
+enum TransportAndFamily : unsigned char {
     udp_ipv4 = 2,
     udp_ipv6 = 10,
     tcp_ipv4 = 130,
@@ -30,7 +30,7 @@ std::stringstream make_bytes(
         uint8_t transport_and_family,
         const std::vector<uint8_t>& ip,
         uint16_t port,
-        public_key pk) {
+        PublicKey pk) {
     std::stringstream ss;
 
     ss.put(transport_and_family);
@@ -48,8 +48,8 @@ std::stringstream make_bytes(
     return ss;
 }
 
-public_key random_key() {
-    public_key pk;
+PublicKey random_key() {
+    PublicKey pk;
     for (size_t i = 0; i < pk.size(); ++i) {
         pk[i] = rand() & 0xFF;
     }
@@ -89,10 +89,10 @@ TEST_CASE("node_info: parse ipv4 tcp node") {
     const auto key = random_key();
 
     auto bytes = make_bytes(tcp_ipv4, ip, port, key);
-    node_info info = from_bytes(bytes);
+    NodeInfo info = from_bytes(bytes);
 
-    REQUIRE(info.protocol == transport_protocol::tcp);
-    REQUIRE(info.family == address_family::ipv4);
+    REQUIRE(info.protocol == TransportProtocol::Tcp);
+    REQUIRE(info.family == AddressFamily::IPv4);
     REQUIRE(info.ip == ip);
     REQUIRE(info.port == port);
     REQUIRE(info.public_key == key);
@@ -108,10 +108,10 @@ TEST_CASE("node_info: parse ipv6 udp node") {
     const auto key = random_key();
 
     auto bytes = make_bytes(udp_ipv6, ip, port, key);
-    node_info info = from_bytes(bytes);
+    NodeInfo info = from_bytes(bytes);
 
-    REQUIRE(info.protocol == transport_protocol::udp);
-    REQUIRE(info.family == address_family::ipv6);
+    REQUIRE(info.protocol == TransportProtocol::Udp);
+    REQUIRE(info.family == AddressFamily::IPv6);
     REQUIRE(info.ip == ip);
     REQUIRE(info.port == port);
     REQUIRE(info.public_key == key);

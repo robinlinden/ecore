@@ -10,12 +10,12 @@ using namespace ecore::core;
 namespace ecore::crypto {
 namespace {
 
-ciphertext new_ciphertext(size_t plaintext_length) {
-    return ciphertext(plaintext_length + crypto_box_MACBYTES);
+Ciphertext new_ciphertext(size_t plaintext_length) {
+    return Ciphertext(plaintext_length + crypto_box_MACBYTES);
 }
 
-plaintext new_plaintext(size_t ciphertext_length) {
-    return plaintext(ciphertext_length - crypto_box_MACBYTES, '@');
+Plaintext new_plaintext(size_t ciphertext_length) {
+    return Plaintext(ciphertext_length - crypto_box_MACBYTES, '@');
 }
 
 void init_crypto_if_needed() {
@@ -33,30 +33,30 @@ void init_crypto_if_needed() {
 
 }
 
-keypair new_keypair() {
+KeyPair new_keypair() {
     init_crypto_if_needed();
 
-    keypair keypair;
+    KeyPair keypair;
     crypto_box_keypair(keypair.public_key.data(), keypair.secret_key.data());
 
     return keypair;
 }
 
-nonce new_nonce() {
+Nonce new_nonce() {
     init_crypto_if_needed();
 
-    nonce n;
+    Nonce n;
     randombytes_buf(n.data(), n.size());
     return n;
 }
 
-encryption_result encrypt(
-        const secret_key &sender,
-        const public_key &receiver,
-        const plaintext &plain) {
+EncryptionResult encrypt(
+        const SecretKey &sender,
+        const PublicKey &receiver,
+        const Plaintext &plain) {
     init_crypto_if_needed();
 
-    encryption_result result{new_nonce(), new_ciphertext(plain.size())};
+    EncryptionResult result{new_nonce(), new_ciphertext(plain.size())};
     if (crypto_box_easy(
             result.ciphertext.data(),
             reinterpret_cast<const uint8_t *>(plain.data()),
@@ -70,14 +70,14 @@ encryption_result encrypt(
     return result;
 }
 
-plaintext decrypt(
-        const secret_key &receiver,
-        const public_key &sender,
-        const nonce &nonce,
-        const ciphertext &cipher) {
+Plaintext decrypt(
+        const SecretKey &receiver,
+        const PublicKey &sender,
+        const Nonce &nonce,
+        const Ciphertext &cipher) {
     init_crypto_if_needed();
 
-    plaintext plain = new_plaintext(cipher.size());
+    Plaintext plain = new_plaintext(cipher.size());
     if (crypto_box_open_easy(
             reinterpret_cast<uint8_t *>(plain.data()),
             cipher.data(),

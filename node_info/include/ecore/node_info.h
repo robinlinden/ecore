@@ -8,26 +8,26 @@
 
 namespace ecore::node_info {
 
-enum class transport_protocol : uint8_t {
-    udp,
-    tcp,
+enum class TransportProtocol : uint8_t {
+    Udp,
+    Tcp,
 };
 
-enum class address_family : uint8_t {
-    ipv4,
-    ipv6,
+enum class AddressFamily : uint8_t {
+    IPv4,
+    IPv6,
 };
 
-struct node_info {
-    transport_protocol protocol;
-    address_family family;
+struct NodeInfo {
+    TransportProtocol protocol;
+    AddressFamily family;
     std::vector<uint8_t> ip;
     uint16_t port;
-    core::public_key public_key;
+    core::PublicKey public_key;
 };
 
 // Takes a bytestream containing a node in the packed_node format and parses it
 // into a reasonable struct.
-node_info from_bytes(std::istream &bytestream);
+NodeInfo from_bytes(std::istream &bytestream);
 
 }
