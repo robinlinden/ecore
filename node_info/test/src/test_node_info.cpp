@@ -50,13 +50,13 @@ std::stringstream make_bytes(
 
 PublicKey random_key() {
     PublicKey pk;
-    for (size_t i = 0; i < pk.size(); ++i) {
-        pk[i] = rand() & 0xFF;
+    for (uint8_t &i : pk) {
+        i = rand() & 0xFF;
     }
     return pk;
 }
 
-size_t streamsize(std::istream &stream) {
+size_t stream_size(std::istream &stream) {
     stream.seekg(0, std::ios::end);
     std::istream::pos_type size = stream.tellg();
     stream.seekg(0, std::ios::beg);
@@ -66,55 +66,57 @@ size_t streamsize(std::istream &stream) {
     return static_cast<size_t>(size);
 }
 
-TEST_CASE("node_info: length of tested bytes") {
-    const std::vector<uint8_t> ipv4{1, 10, 100, 255};
-    const uint16_t port{52089};
-    const auto key = random_key();
+TEST_CASE("node_info") {
+    SECTION("length of tested bytes") {
+        const std::vector<uint8_t> ipv4{1, 10, 100, 255};
+        const uint16_t port{52089};
+        const auto key = random_key();
 
-    auto bytes = make_bytes(tcp_ipv4, ipv4, port, key);
-    REQUIRE(streamsize(bytes) == 39);
+        auto bytes = make_bytes(tcp_ipv4, ipv4, port, key);
+        REQUIRE(stream_size(bytes) == 39);
 
-    std::vector<uint8_t> ipv6{
-            1, 10, 100, 255,
-            2, 20, 200, 66,
-            1, 10, 100, 255,
-            1, 10, 100, 255};
-    bytes = make_bytes(tcp_ipv6, ipv6, port, key);
-    REQUIRE(streamsize(bytes) == 51);
-}
+        std::vector<uint8_t> ipv6{
+                1, 10, 100, 255,
+                2, 20, 200, 66,
+                1, 10, 100, 255,
+                1, 10, 100, 255};
+        bytes = make_bytes(tcp_ipv6, ipv6, port, key);
+        REQUIRE(stream_size(bytes) == 51);
+    }
 
-TEST_CASE("node_info: parse ipv4 tcp node") {
-    const std::vector<uint8_t> ip{1, 10, 100, 255};
-    const uint16_t port{8089};
-    const auto key = random_key();
+    SECTION("parse ipv4 tcp node") {
+        const std::vector<uint8_t> ip{1, 10, 100, 255};
+        const uint16_t port{8089};
+        const auto key = random_key();
 
-    auto bytes = make_bytes(tcp_ipv4, ip, port, key);
-    NodeInfo info = from_bytes(bytes);
+        auto bytes = make_bytes(tcp_ipv4, ip, port, key);
+        NodeInfo info = from_bytes(bytes);
 
-    REQUIRE(info.protocol == TransportProtocol::Tcp);
-    REQUIRE(info.family == AddressFamily::IPv4);
-    REQUIRE(info.ip == ip);
-    REQUIRE(info.port == port);
-    REQUIRE(info.public_key == key);
-}
+        REQUIRE(info.protocol == TransportProtocol::Tcp);
+        REQUIRE(info.family == AddressFamily::IPv4);
+        REQUIRE(info.ip == ip);
+        REQUIRE(info.port == port);
+        REQUIRE(info.public_key == key);
+    }
 
-TEST_CASE("node_info: parse ipv6 udp node") {
-    const std::vector<uint8_t> ip{
-            1, 10, 100, 255,
-            2, 20, 200, 66,
-            1, 10, 100, 255,
-            1, 10, 100, 255};
-    const uint16_t port{25000};
-    const auto key = random_key();
+    SECTION("parse ipv6 udp node") {
+        const std::vector<uint8_t> ip{
+                1, 10, 100, 255,
+                2, 20, 200, 66,
+                1, 10, 100, 255,
+                1, 10, 100, 255};
+        const uint16_t port{25000};
+        const auto key = random_key();
 
-    auto bytes = make_bytes(udp_ipv6, ip, port, key);
-    NodeInfo info = from_bytes(bytes);
+        auto bytes = make_bytes(udp_ipv6, ip, port, key);
+        NodeInfo info = from_bytes(bytes);
 
-    REQUIRE(info.protocol == TransportProtocol::Udp);
-    REQUIRE(info.family == AddressFamily::IPv6);
-    REQUIRE(info.ip == ip);
-    REQUIRE(info.port == port);
-    REQUIRE(info.public_key == key);
+        REQUIRE(info.protocol == TransportProtocol::Udp);
+        REQUIRE(info.family == AddressFamily::IPv6);
+        REQUIRE(info.ip == ip);
+        REQUIRE(info.port == port);
+        REQUIRE(info.public_key == key);
+    }
 }
 
 } // namespace
