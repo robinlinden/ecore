@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECORE_CRYPTO_H
+#define ECORE_CRYPTO_H
 
 #include "ecore/core.h"
 
@@ -36,3 +37,5 @@ Plaintext decrypt(
 uint32_t random_bytes();
 
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECORE_UTIL_SERIALIZE_H
+#define ECORE_UTIL_SERIALIZE_H
 
 #include <climits>
 #include <cstddef>
@@ -23,3 +24,5 @@ T net_unpack(const T in) {
 }
 
 } // namespace ecore::util
+
+#endif

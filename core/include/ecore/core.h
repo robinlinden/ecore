@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECORE_CORE_H
+#define ECORE_CORE_H
 
 #include <array>
 #include <cstdint>
@@ -14,3 +15,5 @@ struct KeyPair {
 };
 
 }
+
+#endif

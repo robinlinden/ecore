@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECORE_NODE_INFO_H
+#define ECORE_NODE_INFO_H
 
 #include "ecore/core.h"
 
@@ -31,3 +32,5 @@ struct NodeInfo {
 NodeInfo from_bytes(std::istream &bytestream);
 
 }
+
+#endif
