@@ -27,6 +27,13 @@ jobs:
             configuration: Debug
             cmake-args: -A x64
 
+          - name: windows-2019-clang
+            os: windows-2019
+            compiler: clang
+            generator: Ninja
+            configuration: Debug
+            cmake-args: -DCMAKE_C_COMPILER="clang.exe" -DCMAKE_CXX_COMPILER="clang.exe"
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -35,6 +42,13 @@ jobs:
 
       - name: Install
         run: pip install cmake==3.18.2.post1 ninja==1.10.0.post2 --upgrade
+
+      - name: Install clang
+        if: matrix.compiler == 'clang'
+        run: |
+          curl -fsSLO https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.0/LLVM-10.0.0-win64.exe
+          7z x LLVM-10.0.0-win64.exe -y -o"c:\llvm"
+          echo "::add-path::c:\llvm\bin"
 
       - name: CMake
         run: cmake -S . -B build -G "${{ matrix.generator }}" ${{ matrix.cmake-args }}
