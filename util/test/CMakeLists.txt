@@ -4,6 +4,7 @@ project(test_ecore_util)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/test_byte_stream.cpp
     src/test_serialize.cpp
 )
 
